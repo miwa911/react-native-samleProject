@@ -108,6 +108,11 @@ class LoginScreen extends Component {
       <Button style = {styles.button} onPress={Actions.map} >
        To MapView
        </Button>
+       <Button style = {styles.button} onPress={Actions.tabbar} >
+        To TabBar
+        </Button>
+
+
       </View>
     ) ;
     } else {

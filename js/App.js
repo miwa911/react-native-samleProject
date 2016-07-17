@@ -28,6 +28,8 @@ var { connect } = require('react-redux');
 var {serverURL, enableParse} = require('./env');
 import LoginScreen from './components/LoginScreen'
 import MapViewScreen from './components/MapViewScreen'
+import TabView from './components/TabView';
+import TabIcon from './components/TabIcon';
 // define this based on the styles/dimensions you use
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
   const style = {
@@ -87,6 +89,45 @@ class App extends Component {
           <Scene key="root">
           <Scene key="login" component={LoginScreen} title="Login"/>
           <Scene key="map" component={MapViewScreen} title="MapView" />
+
+          <Scene key="tabbar" >
+            <Scene
+              key="main"
+              tabs
+              tabBarStyle={styles.tabBarStyle}
+              tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
+            >
+              <Scene
+                key="tab1"
+                title="Home"
+                iconName={"home"}
+                icon={TabIcon}
+                navigationBarStyle={{ backgroundColor: 'red' }}
+                titleStyle={{ color: 'white' }}
+              >
+                <Scene
+                  key="tab1_1"
+                  component={TabView}
+                  title="Tab #1_1"
+                  onRight={() => alert('Right button')}
+                  rightTitle="Right"
+                />
+                <Scene
+                  key="tab1_2"
+                  component={TabView}
+                  title="Tab #1_2"
+                  titleStyle={{ color: 'black' }}
+                />
+              </Scene>
+
+
+              <Scene key="tab3" component={TabView} title="Tab #3" iconName={"gear"} hideTabBar icon={TabIcon} />
+              <Scene key="tab4" component={TabView} title="Tab #4" iconName={"sign-out"} hideNavBar icon={TabIcon} />
+              <Scene key="tab5" component={TabView} title="Tab #5" iconName={"sign-out"} hideTabBar icon={TabIcon} />
+            </Scene>
+            </Scene>
+
+
           </Scene>
         </Router>
 
