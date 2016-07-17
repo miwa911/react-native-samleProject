@@ -1,0 +1,179 @@
+var async = require('async')
+  , MemoryStore = require('./memoryStore');
+
+import DataFetcher from './../datafetcher';
+
+function Cache(options) {
+    this.namespace = options.namespace  || 'cache';
+    this.backend = options.backend      || MemoryStore;
+    this.policy = options.policy        || { maxEntries: 50000 };
+}
+
+Cache.prototype.addToLRU = function(key, callback) {
+    var self = this;
+    this.getLRU(function(err, lru) {
+        if (err) return callback(err);
+
+        lru.push(key);
+
+        self.setLRU(lru, callback);
+    });
+};
+
+Cache.prototype.removeFromLRU = function(key, callback) {
+    var self = this;
+    this.getLRU(function(err, lru) {
+       if (err) return callback(err);
+
+        var newLRU = lru.filter(function(item) {
+           return item !== key;
+        });
+
+        self.setLRU(newLRU, callback);
+    });
+};
+
+Cache.prototype.refreshLRU = function(key, callback) {
+    var self = this;
+    this.removeFromLRU(key, function(err) {
+        if (err) return callback(err);
+        self.addToLRU(key, callback);
+    });
+};
+
+Cache.prototype.getLRUKey = function() {
+    return this.makeCompositeKey("_lru");
+};
+
+Cache.prototype.getLRU = function(callback) {
+    this.backend.getItem(this.getLRUKey(), function(err, dirString) {
+        if (err) return callback(err);
+
+        var dir;
+        if (!dirString)
+            dir = [];
+        else
+            dir = JSON.parse(dirString);
+
+        return callback(null, dir);
+    });
+};
+
+Cache.prototype.setLRU = function(lru, callback) {
+    this.backend.setItem(this.getLRUKey(), JSON.stringify(lru), function(err) {
+        return callback(err, lru);
+    });
+};
+
+Cache.prototype.enforceLimits = function(callback) {
+    var self = this;
+    if (!this.policy.maxEntries) return callback();
+
+    this.getLRU(function(err, lru) {
+        var victimCount = Math.max(0, lru.length - self.policy.maxEntries);
+        var victimList = lru.slice(0, victimCount);
+        async.eachSeries(victimList, function(key, callback) {
+            self.delItem(key, callback);
+        }, function(err) {
+            var survivorList = lru.slice(victimCount);
+            self.setLRU(survivorList, callback);
+        });
+    });
+};
+
+Cache.prototype.clear = function(key, callback) {
+  this.backend.clear( function(error) { return callback(err);} );
+}
+
+Cache.prototype.delItem = function(key, callback) {
+    var self = this;
+    var compositeKey = this.makeCompositeKey(key);
+    this.backend.removeItem(compositeKey, function(err) {
+        if (err) return callback(err);
+
+        self.removeFromLRU(key, callback);
+    });
+};
+
+// Cache.prototype.getItem = function(key, callback) {
+//     var self = this;
+//
+//     this.peekItem(key, function(err, value) {
+//         callback(err, value);
+//
+//         self.refreshLRU(key, function() {});
+//     });
+// };
+
+Cache.prototype.getItem = function(key, callback) {
+    var self = this;
+    this.peekItem(key, function(err, value) {
+        if (err) return callback(err);
+        if (!value) {
+          DataFetcher().fetch( key ,
+             function(response) {
+                //var body = response["_bodyInit"];
+                try {
+                  self.setItem(key, response, function(err){});
+                } catch (error) {
+                  console.log('CacheError: '+ error);
+                }
+
+                return callback(null, response)
+              } ,
+              function(error) {return callback(error)}
+          ) ;
+        } else {
+            self.refreshLRU(key, function(err) {
+            if (err) return callback(err);
+
+            return callback(null, value);
+          });
+        }
+    });
+};
+
+Cache.prototype.makeCompositeKey = function(key) {
+    return this.namespace + ":" + key;
+};
+
+Cache.prototype.peekItem = function(key, callback) {
+    var compositeKey = this.makeCompositeKey(key);
+    this.backend.getItem(compositeKey, function(err, entryJsonString) {
+        if (err) return callback(err);
+
+        var entry;
+        if (entryJsonString) {
+            entry = JSON.parse(entryJsonString);
+        }
+
+        var value;
+        if (entry)
+            value = entry.value;
+
+        return callback(null, value);
+    });
+};
+
+Cache.prototype.setItem = function(key, value, callback) {
+    var self = this;
+    var entry = {
+        created: new Date(),
+        value: value
+    };
+
+    var compositeKey = this.makeCompositeKey(key);
+    var entryString = JSON.stringify(entry);
+
+    self.backend.setItem(compositeKey, entryString, function(err) {
+        if (err) return callback(err);
+
+        self.refreshLRU(key, function(err) {
+            if (err) return callback(err);
+
+            self.enforceLimits(callback);
+        });
+    });
+};
+
+module.exports = Cache;

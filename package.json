@@ -1,0 +1,36 @@
+{
+  "name": "projecttest",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "server": "babel-node ./server/server.js",
+    "babel-version": "babel --version"
+  },
+  "dependencies": {
+    "apsl-react-native-button": "^3.0.0",
+    "crc32": "^0.2.2",
+    "express": "^4.14.0",
+    "parse": "^1.9.0",
+    "parse-dashboard": "^1.0.14",
+    "parse-server": "^2.2.16",
+    "react": "15.2.1",
+    "react-native": "0.29.0",
+    "react-native-collapsible": "^0.7.0",
+    "react-native-fbsdk": "^0.2.2",
+    "react-native-geocoder": "^0.4.3",
+    "react-native-maps": "^0.7.1",
+    "react-native-push-notification": "^2.0.0",
+    "react-native-router-flux": "^3.31.0",
+    "react-native-vector-icons": "^2.0.3",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-persist": "^3.2.2",
+    "redux-thunk": "^2.1.0",
+    "tcomb-form-native": "^0.5.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.10.1"
+  }
+}
