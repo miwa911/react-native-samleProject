@@ -62,8 +62,7 @@ function receivePushNotification(notification: PushNotification): ThunkAction {
   return (dispatch) => {
     const {foreground, message } = notification;
     const data = normalizeData(notification.data);
-    console.log('recieve notification');
-    console.log('data:' + JSON.stringify(data));
+    
     if (!foreground) {
       //dispatch(switchTab('notifications'));
     }

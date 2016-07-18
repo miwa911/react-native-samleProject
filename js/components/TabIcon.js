@@ -24,7 +24,7 @@ const propTypes = {
 // );
 class TabIcon extends React.Component {
   render() {
-    console.log('this.props:' + JSON.stringify(this.props))
+    
     var color = this.props.selected ? '#FF3366' : '#FFB3B3';
 
     return (

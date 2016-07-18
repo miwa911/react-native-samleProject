@@ -30,6 +30,8 @@ import LoginScreen from './components/LoginScreen'
 import MapViewScreen from './components/MapViewScreen'
 import TabView from './components/TabView';
 import TabIcon from './components/TabIcon';
+import ListHomes from './components/ListHomes'
+import Icon from 'react-native-vector-icons/Ionicons';
 // define this based on the styles/dimensions you use
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
   const style = {
@@ -46,6 +48,19 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
   }
   return style;
 };
+
+const Right = (func) => (
+  <TouchableOpacity onPress={onbuttonRight} style={{
+    width: 40,
+    height: 31,
+    position: 'absolute',
+    bottom: 4,
+    right: 2,
+
+  }} >
+  <Icon name="ios-add-circle-outline" size={30} />
+  </TouchableOpacity>
+);
 
 class App extends Component {
   constructor(props) {
@@ -81,14 +96,16 @@ class App extends Component {
     });
   }
 
+  onbuttonRight() {
+    alert('right');
+  }
+
   render() {
     if (enableParse) {
       return (
         <View style={styles.container}>
         <Router getSceneStyle={getSceneStyle}>
           <Scene key="root">
-          <Scene key="login" component={LoginScreen} title="Login"/>
-          <Scene key="map" component={MapViewScreen} title="MapView" />
 
           <Scene key="tabbar" >
             <Scene
@@ -97,33 +114,12 @@ class App extends Component {
               tabBarStyle={styles.tabBarStyle}
               tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
             >
-              <Scene
-                key="tab1"
-                title="Home"
-                iconName={"home"}
-                icon={TabIcon}
-                navigationBarStyle={{ backgroundColor: 'red' }}
-                titleStyle={{ color: 'white' }}
-              >
-                <Scene
-                  key="tab1_1"
-                  component={TabView}
-                  title="Tab #1_1"
-                  onRight={() => alert('Right button')}
-                  rightTitle="Right"
-                />
-                <Scene
-                  key="tab1_2"
-                  component={TabView}
-                  title="Tab #1_2"
-                  titleStyle={{ color: 'black' }}
-                />
-              </Scene>
 
-
-              <Scene key="tab3" component={TabView} title="Tab #3" iconName={"gear"} hideTabBar icon={TabIcon} />
-              <Scene key="tab4" component={TabView} title="Tab #4" iconName={"sign-out"} hideNavBar icon={TabIcon} />
-              <Scene key="tab5" component={TabView} title="Tab #5" iconName={"sign-out"} hideTabBar icon={TabIcon} />
+              <Scene key="login" component={LoginScreen} title="Login" iconName={"home"}  icon={TabIcon} />
+              <Scene key="map" component={MapViewScreen} title="Map" iconName={"map"} hideNavBar  icon={TabIcon} />
+              {/* <Scene key="list" component={ListHomes} title="List" iconName={"list"}  icon={TabIcon} renderRightButton={( ) => <Right />} onRight={() => alert('Right button')}/> */}
+              <Scene key="list" component={ListHomes} title="List" iconName={"list"}  icon={TabIcon} rightTitle="Add" onRight={() => alert('Right button')}/>
+              <Scene key="tab4" component={TabView} title="Tài khoản" iconName={"user"} hideNavBar icon={TabIcon} />
             </Scene>
             </Scene>
 
@@ -150,7 +146,7 @@ var styles = StyleSheet.create({
   },
 });
 function select(store) {
-  console.log('after render setup store:' + JSON.stringify(store));
+
   return {
     isLoggedIn: store.user.isLoggedIn || store.user.hasSkippedLogin,
   };

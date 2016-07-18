@@ -38,7 +38,7 @@ class AccordionPicker extends Select {
   }
 
   _renderContent (locals) {
-    console.log('locals:' + JSON.stringify(locals) )
+
     return (
       <View>
         {t.form.Form.templates.select({...locals, label: null})}
@@ -48,8 +48,6 @@ class AccordionPicker extends Select {
   // onChange(active) {
   //
   //   this.onChangeParent(active);
-  //   console.log('this.state:'+JSON.stringify(this.state))
-  //   console.log('active' + JSON.stringify(active))
   // }
   getTemplate () {
     var self = this

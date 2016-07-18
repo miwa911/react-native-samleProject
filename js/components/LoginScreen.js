@@ -18,7 +18,7 @@ var t = require('tcomb-form-native');
 var Form = t.form.Form;
 import Geocoder from 'react-native-geocoder';
 import AccordionPicker from './AccordionPicker';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 // here we are: define your domain model
 var City = t.enums({
   M: 'Male',
@@ -127,10 +127,7 @@ class LoginScreen extends Component {
         <TouchableOpacity style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} underlayColor='blue' >
-          <Text style={styles.buttonText}> Login with Facebook  </Text>
-          </TouchableOpacity>
-          <LoginButton onLoggedIn={() => this.loggedIn()} />
+        <LoginButton onLoggedIn={() => this.loggedIn()} />
           {/*<Button onPress={Actions.loginModal2}>Login 2</Button>
           <Button onPress={() => Actions.refresh({title:"Changed title"})}>Change title</Button>
           <Button onPress={Actions.pop}>Back</Button>*/}

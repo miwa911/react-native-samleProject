@@ -11,7 +11,7 @@ import{
   StyleSheet,
 }from 'react-native';
 import Button from 'apsl-react-native-button'
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 const { logInWithFacebook } = require('../actions');
 const {connect} = require('react-redux');
 
@@ -55,10 +55,9 @@ class LoginButton extends React.Component {
 
     />*/}
     return (
-      <Button style={[styles.button, this.props.style]} onPress={() => this.logIn()}>
-
-         Log in with Facebook 
-      </Button>
+      <Icon.Button name="facebook" backgroundColor="#3b5998" onPress={() => this.logIn()}>
+        Login with Facebook
+      </Icon.Button>
 
     );
   }

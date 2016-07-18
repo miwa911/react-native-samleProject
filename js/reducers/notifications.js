@@ -45,7 +45,7 @@ const initialState = {
 import type {Action} from '../actions/types';
 
 function notifications(state: State = initialState, action: Action): State {
-  console.log('notifications')
+  
   switch (action.type) {
     case 'LOADED_NOTIFICATIONS':
       let list = action.list.map(fromParseObject);

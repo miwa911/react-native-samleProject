@@ -25,7 +25,7 @@ const initialState = {
 };
 
 function user(state: State = initialState, action: Action): State {
-  console.log('reducer user:' + action.type);
+
   if (action.type === 'LOGGED_IN') {
     let {id, name, sharedSchedule} = action.data;
     if (sharedSchedule === undefined) {
@@ -60,7 +60,7 @@ function user(state: State = initialState, action: Action): State {
   if (action.type === 'RESET_NUXES') {
     return {...state, sharedSchedule: null};
   }
-  console.log('reducer user last line:' + JSON.stringify(state));
+  
   return state;
 }
 
