@@ -13,7 +13,7 @@ const APP_ID = process.env.APP_ID || 'sampleProject-app';
 const MASTER_KEY = process.env.MASTER_KEY || '70c6093dba5a7e55968a1c7ad3dd3e5a6375gg';
 const DATABASE_URI = process.env.DATABASE_URI || 'mongodb://localhost:27017/sampleProject';
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
-const DASHBOARD_AUTH = process.env.DASHBOARD_AUTH;
+const DASHBOARD_AUTH = process.env.DASHBOARD_AUTH || 'hung:hung';
 
 Parse.initialize(APP_ID);
 Parse.serverURL = `http://localhost:${SERVER_PORT}/parse`;
