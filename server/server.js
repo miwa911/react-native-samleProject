@@ -18,7 +18,7 @@ const DASHBOARD_AUTH = process.env.DASHBOARD_AUTH || 'hung:hung';
 Parse.initialize(APP_ID);
 Parse.serverURL = `http://localhost:${SERVER_PORT}/parse`;
 Parse.masterKey = MASTER_KEY;
-//Parse.Cloud.useMasterKey();
+Parse.Cloud.useMasterKey();
 
 function getSchema() {
   if (!IS_DEVELOPMENT) {
@@ -35,7 +35,7 @@ server.use(
   '/parse',
   new ParseServer({
     databaseURI: DATABASE_URI,
-    //cloud: path.resolve(__dirname, 'cloud.js'),
+    cloud: path.resolve(__dirname, 'cloud.js'),
     appId: APP_ID,
     masterKey: MASTER_KEY,
     //fileKey: 'f33fc1a9-9ba9-4589-95ca-9976c0d52cd5',
