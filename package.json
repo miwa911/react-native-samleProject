@@ -8,21 +8,19 @@
     "babel-version": "babel --version"
   },
   "dependencies": {
-
     "crc32": "^0.2.2",
     "express": "^4.14.0",
+    "nodemailer": "^2.5.0",
     "parse": "^1.9.0",
     "parse-dashboard": "^1.0.14",
     "parse-server": "^2.2.16",
     "react": "15.2.1",
     "react-native": "0.29.0",
-
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-persist": "^3.2.2",
     "redux-thunk": "^2.1.0"
-
   },
   "devDependencies": {
     "babel-cli": "^6.10.1"

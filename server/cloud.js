@@ -1,1 +1,1 @@
-require('cloud/tests.js');
+require('./cloud/test');
